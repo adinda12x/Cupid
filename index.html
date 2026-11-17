@@ -3,81 +3,73 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>From Irfan For You ♥</title>
+  <title>Starlight Postcard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="ambient-bg" aria-hidden="true">
-    <div class="fx-grain"></div>
-  </div>
+  <div class="star-field" id="star-field" aria-hidden="true"></div>
 
-  <!-- Hujan hati saat sudah klik YES -->
-  <div id="heart-rain" class="heart-rain" aria-hidden="true"></div>
-
-  <!-- SCENE 1: Amplop & Panah Cupid -->
-  <main id="scene-envelope" class="scene active">
-    <div class="envelope-stage" role="application" aria-label="Interactive love envelope">
-      <div id="envelope" class="envelope" aria-label="Love envelope">
-        <div class="envelope-flap"></div>
-        <div class="envelope-body"></div>
-        <div id="target" class="target" title="Aim here">♥</div>
+  <!-- Tahap 1: Kartu Pos Terkunci -->
+  <main id="stage-seal" class="stage">
+    <section class="postcard" aria-label="Interactive starlight postcard">
+      <div class="postcard-top">
+        <span class="tag">AIRMAIL // PIXEL EDITION</span>
+        <span class="stamp">✦ 01</span>
       </div>
 
-      <p class="from-label">From Irfan For You ♥</p>
+      <p class="sender-note">A small note addressed to you</p>
 
-      <div class="archery-area">
-        <div id="arrow" class="arrow" aria-hidden="true">
-          <span class="arrow-head">▲</span>
-          <span class="arrow-shaft"></span>
+      <div class="seal-zone">
+        <div id="orbit-ring" class="orbit-ring" aria-hidden="true">
+          <span id="dart" class="dart">➤</span>
         </div>
-        <div class="bow" aria-hidden="true"></div>
+        <button id="seal-btn" class="seal-btn" type="button" aria-label="Unlock postcard">
+          <span class="seal-icon">✦</span>
+          <span class="seal-text">TAP SEAL</span>
+        </button>
       </div>
 
-      <p id="hint-text" class="hint-text">Click, drag, or press Space to shoot ♥</p>
-    </div>
+      <p class="helper-note">Click the seal or press Enter to unseal</p>
+    </section>
   </main>
 
-  <!-- SCENE 2: Popup Window LOVE -->
-  <section id="scene-proposal" class="scene hidden" aria-live="polite">
-    <div class="retro-window">
-      <div class="window-header">
-        <span class="window-title">LOVE</span>
-        <div class="window-controls" aria-hidden="true">
-          <span>−</span>
-          <span>□</span>
-          <span>×</span>
+  <!-- Tahap 2: Kartu Interaktif -->
+  <section id="stage-card" class="stage hidden" aria-live="polite">
+    <div class="console-card">
+      <div class="console-bar">
+        <span class="console-title">NOTEBOOK.EXE</span>
+        <div class="console-pips" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
       </div>
 
-      <div class="window-dots" aria-hidden="true">
-        <span>♥</span>
-        <span>♥</span>
-        <span>♥</span>
-      </div>
+      <!-- Halaman Pertanyaan -->
+      <div id="prompt-panel" class="console-body">
+        <p class="eyebrow">SPECIAL TRANSMISSION</p>
+        <h1 class="headline">Ready for our next chapter together? ✨</h1>
 
-      <!-- State Pertanyaan -->
-      <div id="ask-view" class="window-body">
-        <h1 class="question-text">Do you want to be my girlfriend? ♡</h1>
+        <canvas id="mascot-canvas" width="112" height="96" aria-label="Pixel bunny holding a star"></canvas>
 
-        <canvas id="pixel-cat" width="112" height="96" aria-label="Pixel cat holding a heart"></canvas>
-
-        <div id="button-arena" class="button-arena">
-          <button id="yes-btn" class="btn btn-yes" type="button">YES</button>
-          <button id="no-btn" class="btn btn-no" type="button">NO</button>
+        <div id="choice-zone" class="choice-zone">
+          <button id="yes-choice" class="choice-btn primary" type="button">COUNT ME IN</button>
+          <button id="dodge-choice" class="choice-btn secondary" type="button">NOT YET</button>
         </div>
       </div>
 
-      <!-- State Setelah Klik YES -->
-      <div id="accepted-view" class="window-body hidden">
-        <h2 class="yay-text">Yayyy! I love you ♡</h2>
+      <!-- Halaman Konfirmasi -->
+      <div id="result-panel" class="console-body hidden">
+        <p class="eyebrow">STATUS UPDATED</p>
+        <h2 class="headline">Awesome! Best decision ever ✨</h2>
 
-        <canvas id="pixel-cat-happy" width="112" height="96" aria-label="Happy pixel cat"></canvas>
+        <canvas id="mascot-happy-canvas" width="112" height="96" aria-label="Happy pixel bunny"></canvas>
 
-        <p class="sub-message">I'm really happy you can accept me</p>
-        <div class="love-badge">I LOVE YOU ♥</div>
+        <p class="caption">Saved to our favorite memories log.</p>
+        <div class="pill-badge">CHAPTER UNLOCKED ✦</div>
       </div>
     </div>
   </section>
