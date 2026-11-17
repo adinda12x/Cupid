@@ -1,139 +1,136 @@
-const envelope = document.getElementById("envelope");
-const arrow = document.getElementById("arrow");
-const sceneEnvelope = document.getElementById("scene-envelope");
-const sceneProposal = document.getElementById("scene-proposal");
+const sealBtn = document.getElementById("seal-btn");
+const sealZone = document.querySelector(".seal-zone");
+const stageSeal = document.getElementById("stage-seal");
+const stageCard = document.getElementById("stage-card");
 
-const askView = document.getElementById("ask-view");
-const acceptedView = document.getElementById("accepted-view");
-const yesBtn = document.getElementById("yes-btn");
-const noBtn = document.getElementById("no-btn");
-const buttonArena = document.getElementById("button-arena");
-const heartRain = document.getElementById("heart-rain");
+const promptPanel = document.getElementById("prompt-panel");
+const resultPanel = document.getElementById("result-panel");
+const yesChoice = document.getElementById("yes-choice");
+const dodgeChoice = document.getElementById("dodge-choice");
+const choiceZone = document.getElementById("choice-zone");
+const starField = document.getElementById("star-field");
 
-let alreadyShot = false;
+let isUnsealed = false;
 
-// Gambar pixel cat memegang hati
-function drawPixelCat(canvasId, happy = false) {
+// Gambar maskot kelinci piksel memegang bintang
+function drawPixelBunny(canvasId, cheerful = false) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
   const ctx = canvas.getContext("2d");
-  const p = 7; // ukuran 1 pixel blok
+  const size = 7;
 
-  const grid = [
-    "....#......#....",
-    "...##......##...",
-    "..###..##..###..",
-    "..############..",
-    ".##############.",
-    ".##############.",
-    ".####.#..#.####.",
-    ".##############.",
-    "..############..",
-    "...##########...",
-    "....########....",
-    ".....##..##.....",
+  const sprite = [
+    "...##....##...",
+    "...##....##...",
+    "...##....##...",
+    "..##########..",
+    ".############.",
+    ".############.",
+    ".###.#..#.###.",
+    ".############.",
+    "..##########..",
+    "...########...",
+    "....######....",
+    ".....#..#.....",
   ];
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  grid.forEach((row, rIdx) => {
-    [...row].forEach((cell, cIdx) => {
+  sprite.forEach((row, r) => {
+    [...row].forEach((cell, c) => {
       if (cell === "#") {
-        ctx.fillStyle = "#1c1419";
-        ctx.fillRect(cIdx * p, rIdx * p, p, p);
+        ctx.fillStyle = "#2e2342";
+        ctx.fillRect(c * size, r * size, size, size);
       }
     });
   });
 
-  // Mata / ekspresi
+  // Mata
   ctx.fillStyle = "#ffffff";
-  if (!happy) {
-    ctx.fillRect(4 * p, 5 * p, p, p);
-    ctx.fillRect(11 * p, 5 * p, p, p);
-  } else {
-    // Mata melengkung senang
-    ctx.fillRect(4 * p, 5 * p, p, p);
-    ctx.fillRect(5 * p, 4 * p, p, p);
-    ctx.fillRect(10 * p, 4 * p, p, p);
-    ctx.fillRect(11 * p, 5 * p, p, p);
+  ctx.fillRect(4 * size, 6 * size, size, size);
+  ctx.fillRect(9 * size, 6 * size, size, size);
+
+  if (cheerful) {
+    ctx.fillStyle = "#ff7a6b";
+    ctx.fillRect(3 * size, 7 * size, size, size);
+    ctx.fillRect(10 * size, 7 * size, size, size);
   }
 
-  // Hati merah di depan kucing
-  const heartOffsets = [
-    [6, 7], [9, 7],
-    [5, 8], [6, 8], [7, 8], [8, 8], [9, 8], [10, 8],
-    [6, 9], [7, 9], [8, 9], [9, 9],
-    [7, 10], [8, 10],
+  // Bintang kecil di depan maskot
+  const starBlocks = [
+    [7, 8],
+    [6, 9], [7, 9], [8, 9],
+    [7, 10],
   ];
-  ctx.fillStyle = "#e63956";
-  heartOffsets.forEach(([x, y]) => {
-    ctx.fillRect(x * p, y * p, p, p);
+  ctx.fillStyle = "#ffb703";
+  starBlocks.forEach(([x, y]) => {
+    ctx.fillRect(x * size, y * size, size, size);
   });
 }
 
-function shootArrow() {
-  if (alreadyShot) return;
-  alreadyShot = true;
-  arrow.classList.add("shoot");
+function unlockPostcard() {
+  if (isUnsealed) return;
+  isUnsealed = true;
+  sealZone.classList.add("unlocked");
 
   setTimeout(() => {
-    sceneEnvelope.classList.add("hidden");
-    sceneProposal.classList.remove("hidden");
-    drawPixelCat("pixel-cat", false);
-  }, 680);
+    stageSeal.classList.add("hidden");
+    stageCard.classList.remove("hidden");
+    drawPixelBunny("mascot-canvas", false);
+  }, 520);
 }
 
-envelope.addEventListener("click", shootArrow);
-arrow.addEventListener("click", shootArrow);
-window.addEventListener("keydown", (e) => {
-  if (e.code === "Space" && !alreadyShot) {
-    e.preventDefault();
-    shootArrow();
+sealBtn.addEventListener("click", unlockPostcard);
+window.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && !isUnsealed) {
+    unlockPostcard();
   }
 });
 
-// Tombol NO menghindar saat didekati
-function moveNoButton() {
-  const arenaRect = buttonArena.getBoundingClientRect();
-  const btnRect = noBtn.getBoundingClientRect();
+// Tombol "NOT YET" bergeser ke area lain saat didekati
+function relocateDodgeButton() {
+  const zoneRect = choiceZone.getBoundingClientRect();
+  const btnRect = dodgeChoice.getBoundingClientRect();
 
-  const maxX = Math.max(10, arenaRect.width - btnRect.width - 10);
-  const maxY = Math.max(10, arenaRect.height - btnRect.height - 10);
+  const maxLeft = Math.max(8, zoneRect.width - btnRect.width - 8);
+  const maxTop = Math.max(6, zoneRect.height - btnRect.height - 6);
 
-  const randomX = Math.floor(Math.random() * maxX);
-  const randomY = Math.floor(Math.random() * maxY);
+  const nextLeft = Math.floor(Math.random() * maxLeft);
+  const nextTop = Math.floor(Math.random() * maxTop);
 
-  noBtn.style.left = `${randomX}px`;
-  noBtn.style.top = `${randomY}px`;
+  dodgeChoice.style.left = `${nextLeft}px`;
+  dodgeChoice.style.right = "auto";
+  dodgeChoice.style.top = `${nextTop}px`;
 }
 
-noBtn.addEventListener("mouseenter", moveNoButton);
-noBtn.addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  moveNoButton();
+dodgeChoice.addEventListener("mouseenter", relocateDodgeButton);
+dodgeChoice.addEventListener("touchstart", (event) => {
+  event.preventDefault();
+  relocateDodgeButton();
 });
-noBtn.addEventListener("click", moveNoButton);
+dodgeChoice.addEventListener("click", relocateDodgeButton);
 
-// Hujan hati saat klik YES
-function startHeartRain() {
-  const colors = ["#ff5c8a", "#ff8fab", "#ffb3c6", "#f77f00", "#e63946"];
+// Efek partikel bintang saat konfirmasi
+function launchStarParticles() {
+  const glyphs = ["✦", "✧", "★", "✨"];
+  const palette = ["#7c5dfa", "#ff7a6b", "#ffb703", "#2ec4b6"];
+
   setInterval(() => {
-    const heart = document.createElement("span");
-    heart.className = "falling-heart";
-    heart.textContent = "♥";
-    heart.style.left = `${Math.random() * 100}vw`;
-    heart.style.color = colors[Math.floor(Math.random() * colors.length)];
-    heart.style.fontSize = `${14 + Math.random() * 14}px`;
-    heart.style.animationDuration = `${2.5 + Math.random() * 2.5}s`;
-    heartRain.appendChild(heart);
+    const particle = document.createElement("span");
+    particle.className = "sparkle-particle";
+    particle.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+    particle.style.left = `${Math.random() * 100}vw`;
+    particle.style.color = palette[Math.floor(Math.random() * palette.length)];
+    particle.style.animationDuration = `${2.6 + Math.random() * 2.2}s`;
+    starField.appendChild(particle);
 
-    setTimeout(() => heart.remove(), 5200);
-  }, 180);
+    setTimeout(() => particle.remove(), 5000);
+  }, 200);
 }
 
-yesBtn.addEventListener("click", () => {
-  askView.classList.add("hidden");
-  acceptedView.classList.remove("hidden");
-  drawPixelCat("pixel-cat-happy", true);
-  startHeartRain();
+yesChoice.addEventListener("click", () => {
+  promptPanel.classList.add("hidden");
+  resultPanel.classList.remove("hidden");
+  drawPixelBunny("mascot-happy-canvas", true);
+  launchStarParticles();
 });
